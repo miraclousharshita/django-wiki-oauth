@@ -2,6 +2,10 @@
 <html>
 <body>
   <h1>Profile</h1>
-  {{ user }}
+  <ul>
+    <li>Django user: {{ user }}</li>
+    <li>Pywikibot user: {{ pywikibot_user }}</li>
+    <li>Pywikibot user: {{ pywikibot_error }}</li>
+  </ul>
 </body>
 </html>
