@@ -25,8 +25,7 @@ SECRET_KEY = 'django-insecure-*8f+6lqpe#h$i8jzr%fnqh0$mxf=858oyhq#=gl6s=*#dm1e2j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['harshita-wiki-test.toolforge.org']
 
 # Application definition
 
@@ -141,3 +140,6 @@ SOCIAL_AUTH_MEDIAWIKI_KEY = os.environ.get('MEDIAWIKI_KEY')
 SOCIAL_AUTH_MEDIAWIKI_SECRET = os.environ.get('MEDIAWIKI_SECRET')
 SOCIAL_AUTH_MEDIAWIKI_URL = os.environ.get('MEDIAWIKI_URL')
 SOCIAL_AUTH_MEDIAWIKI_CALLBACK = os.environ.get('MEDIAWIKI_CALLBACK')
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'profile'
