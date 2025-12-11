@@ -1,0 +1,68 @@
+# ----------------------------------------
+# Python
+# ----------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.virtualenv/
+
+# Distribution / packaging
+build/
+dist/
+eggs/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+*.whl
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+pytest_cache/
+nosetests.xml
+coverage.xml
+
+# Django stuff
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+static/
+
+# Migrations (optional — remove if you want migrations in git)
+# */migrations/*
+
+# ----------------------------------------
+# PyCharm / JetBrains IDE
+# ----------------------------------------
+.idea/
+*.iml
+
+# ----------------------------------------
+# OS Files
+# ----------------------------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------------------------
+# Environment / secrets
+# ----------------------------------------
+.env
+.env.*
+*.env
