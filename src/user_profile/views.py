@@ -17,9 +17,18 @@ def profile(request):
     mw_username = None
     user_info = None
     error = None
+    debug_extra_data = None  # Add this
 
     try:
         social_auth = request.user.social_auth.get(provider="mediawiki")
+
+        debug_extra_data = social_auth.extra_data  # Add this
+
+        mw_username = (
+                social_auth.extra_data.get('username') or  # Direct username key
+                social_auth.extra_data.get('user', {}).get('name') or  # Nested in user object
+                None
+        )
 
         token_blob = social_auth.extra_data.get("access_token") or {}
         if isinstance(token_blob, dict):
@@ -31,8 +40,6 @@ def profile(request):
 
         if not access_key or not access_secret:
             raise ValueError("Missing OAuth access token/secret")
-
-        mw_username = social_auth.extra_data.get("username")
 
         parsed_url = urlparse(settings.SOCIAL_AUTH_MEDIAWIKI_URL)
         host = parsed_url.netloc
@@ -50,6 +57,12 @@ def profile(request):
         result = site.get('query', meta='userinfo', uiprop='blockinfo|groups|rights')
         user_info = result.get('query', {}).get('userinfo', {})
 
+        if not mw_username:
+            mw_username = user_info.get('name')
+            if mw_username:
+                social_auth.extra_data['username'] = mw_username
+                social_auth.save()
+
     except UserSocialAuth.DoesNotExist:
         error = "No MediaWiki social-auth record for this user."
     except Exception as e:
@@ -59,6 +72,7 @@ def profile(request):
         "mw_username": mw_username,
         "user_info": user_info,
         "error": error,
+        "debug_extra_data": debug_extra_data,  # Add this
     }
     return render(request, "user_profile/profile.dtl", context)
 
