@@ -2,6 +2,9 @@
 <html>
 <body>
   <h1>My first Django OAuth app</h1>
-  <a href="{% url 'profile' %}">Profile</a>
+  <p>
+    <a href="{% url 'profile' %}">Profile</a> |
+    <a href="{% url 'search' %}">Search Articles</a>
+  </p>
 </body>
 </html>

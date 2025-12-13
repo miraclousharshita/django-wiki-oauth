@@ -1,11 +1,25 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Profile</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 0 20px; }
+        h1, h2 { color: #333; }
+        ul { list-style-type: none; padding: 0; }
+        li { padding: 5px 0; }
+        .stats { background: #f0f0f0; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .error { color: red; }
+        a { color: #0645ad; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
 <body>
   <h1>Profile</h1>
 
   {% if error %}
-    <p style="color: red;">Error: {{ error }}</p>
+    <p class="error">Error: {{ error }}</p>
   {% else %}
+    <h2>User Information</h2>
     <ul>
       <li><strong>Django user:</strong> {{ user }}</li>
       <li><strong>MediaWiki username:</strong> {{ mw_username }}</li>
@@ -18,8 +32,21 @@
         <li><strong>Rights:</strong> {{ user_info.rights|length }} rights</li>
       {% endif %}
     </ul>
+
+    {% if wiki_stats %}
+      <div class="stats">
+        <h2>Wiki Statistics</h2>
+        <ul>
+          <li><strong>Total articles in Commons:</strong> {{ wiki_stats.total_articles|default:"N/A" }}</li>
+          <li><strong>Your edit count:</strong> {{ wiki_stats.user_edit_count|default:"0" }}</li>
+        </ul>
+      </div>
+    {% endif %}
   {% endif %}
 
-  <p><a href="/">Back to Home</a></p>
+  <p>
+    <a href="/">Back to Home</a> |
+    <a href="{% url 'search' %}">Search Articles</a>
+  </p>
 </body>
 </html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Articles</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1000px; margin: 20px auto; padding: 0 20px; }
+        h1 { color: #333; }
+        .search-form { background: #f9f9f9; padding: 20px; border-radius: 5px; margin: 20px 0; }
+        .search-form input, .search-form select { padding: 8px; margin: 5px; }
+        .search-form input[type="text"] { width: 300px; }
+        .search-form button { background: #0645ad; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 3px; }
+        .search-form button:hover { background: #0534a0; }
+        .results { margin: 20px 0; }
+        .result-item { background: #fff; border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 3px; }
+        .result-item h3 { margin: 0 0 10px 0; }
+        .result-item a { color: #0645ad; text-decoration: none; font-size: 18px; }
+        .result-item a:hover { text-decoration: underline; }
+        .meta { color: #666; font-size: 14px; }
+        .error { color: red; padding: 10px; background: #fee; border-radius: 3px; }
+        .no-results { padding: 20px; text-align: center; color: #666; }
+    </style>
+</head>
+<body>
+    <h1>Search Wiki Articles</h1>
+
+    <div class="search-form">
+        <form method="GET">
+            <div>
+                <input type="text" name="q" placeholder="Search articles..." value="{{ search_query }}" required>
+            </div>
+            <div>
+                <label>Limit:
+                    <input type="number" name="limit" min="1" max="100" value="{{ limit }}" style="width: 80px;">
+                </label>
+
+                <label>Namespace:
+                    <select name="namespace">
+                        <option value="0" {% if namespace == 0 %}selected{% endif %}>Main (0)</option>
+                        <option value="6" {% if namespace == 6 %}selected{% endif %}>File (6)</option>
+                        <option value="14" {% if namespace == 14 %}selected{% endif %}>Category (14)</option>
+                    </select>
+                </label>
+
+                <label>
+                    <input type="checkbox" name="exclude_redirects" {% if exclude_redirects %}checked{% endif %}>
+                    Exclude redirects
+                </label>
+            </div>
+            <div>
+                <button type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if results %}
+        <div class="results">
+            <p><strong>Found {{ results|length }} result(s)</strong></p>
+
+            {% for page in results %}
+                <div class="result-item">
+                    <h3><a href="{{ page.url }}" target="_blank">{{ page.full_title }}</a></h3>
+                    <div class="meta">
+                        Page ID: {{ page.page_id }} |
+                        Length: {{ page.page_len }} bytes |
+                        {% if page.page_is_redirect %}Redirect{% else %}Article{% endif %} |
+                        {% if page.page_is_new %}New{% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% elif search_query %}
+        <div class="no-results">
+            <p>No results found for "{{ search_query }}"</p>
+        </div>
+    {% endif %}
+
+    <p><a href="{% url 'profile' %}">Back to Profile</a> | <a href="/">Home</a></p>
+</body>
+</html>
