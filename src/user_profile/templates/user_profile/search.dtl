@@ -21,8 +21,7 @@
     </style>
 </head>
 <body>
-    <h1>Search Wiki Articles</h1>
-
+    <h1>Search English Wikipedia Articles</h1>
     <div class="search-form">
         <form method="GET">
             <div>

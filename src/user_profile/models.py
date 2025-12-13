@@ -34,8 +34,8 @@ class WikiPage(models.Model):
         """Returns the URL to view this page"""
         namespace_names = {0: '', 6: 'File:', 14: 'Category:'}
         ns_prefix = namespace_names.get(self.page_namespace, f'NS{self.page_namespace}:')
-        return f"https://commons.wikimedia.beta.wmcloud.org/wiki/{ns_prefix}{self.page_title.decode('utf-8') if isinstance(self.page_title, bytes) else self.page_title}"
-
+        title = self.page_title.decode('utf-8') if isinstance(self.page_title, bytes) else self.page_title
+        return f"https://en.wikipedia.org/wiki/{ns_prefix}{title}"
 
 class WikiRevision(models.Model):
     """

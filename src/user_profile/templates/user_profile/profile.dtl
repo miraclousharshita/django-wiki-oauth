@@ -35,10 +35,10 @@
 
     {% if wiki_stats %}
       <div class="stats">
-        <h2>Wiki Statistics</h2>
+        <h2>Wiki Statistics (English Wikipedia)</h2>
         <ul>
-          <li><strong>Total articles in Commons:</strong> {{ wiki_stats.total_articles|default:"N/A" }}</li>
-          <li><strong>Your edit count:</strong> {{ wiki_stats.user_edit_count|default:"0" }}</li>
+          <li><strong>Total articles in English Wikipedia:</strong> {{ wiki_stats.total_articles|default:"N/A" }}</li>
+          <li><strong>Your edit count on English Wikipedia:</strong> {{ wiki_stats.user_edit_count|default:"0" }}</li>
         </ul>
       </div>
     {% endif %}

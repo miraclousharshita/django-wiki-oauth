@@ -93,8 +93,8 @@ DATABASES = {
     },
     'wiki_replica': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'commonswiki_p',
-        'HOST': 'commons.analytics.db.svc.wikimedia.cloud',
+        'NAME': 'enwiki_p',
+        'HOST': 'enwiki.analytics.db.svc.wikimedia.cloud',
         'OPTIONS': {
             'charset': 'utf8mb4',
             'read_default_file': os.path.expanduser("~/replica.my.cnf")
