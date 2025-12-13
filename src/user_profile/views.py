@@ -119,7 +119,7 @@ def search_articles(request):
     if request.method == "GET" and request.GET.get('q'):
         search_query = request.GET.get('q', '').strip()
         try:
-            limit = min(int(request.GET.get('limit', 10)), 100)  # Max 100
+            limit = min(int(request.GET.get('limit', 10)), 100)
         except ValueError:
             limit = 10
 
@@ -136,8 +136,8 @@ def search_articles(request):
             )
 
             if search_query:
-                search_bytes = search_query.replace(' ', '_').encode('utf-8')
-                query = query.filter(page_title__contains=search_bytes)
+                search_term = search_query.replace(' ', '_')
+                query = query.filter(page_title__contains=search_term)
 
             if exclude_redirects:
                 query = query.filter(page_is_redirect=False)
