@@ -11,6 +11,9 @@
       <li><strong>MediaWiki username:</strong> {{ mw_username }}</li>
       {% if user_info %}
         <li><strong>User ID:</strong> {{ user_info.id }}</li>
+        {% if user_info.email %}
+          <li><strong>Email:</strong> {{ user_info.email }}</li>
+        {% endif %}
         <li><strong>Groups:</strong> {{ user_info.groups|join:", " }}</li>
         <li><strong>Rights:</strong> {{ user_info.rights|length }} rights</li>
       {% endif %}

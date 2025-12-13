@@ -51,7 +51,7 @@ def profile(request):
             access_secret=access_secret
         )
 
-        result = site.get('query', meta='userinfo', uiprop='blockinfo|groups|rights')
+        result = site.get('query', meta='userinfo', uiprop='email|groups|rights')
         user_info = result.get('query', {}).get('userinfo', {})
 
         if not mw_username:
