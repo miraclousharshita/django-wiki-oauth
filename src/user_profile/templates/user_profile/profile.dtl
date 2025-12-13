@@ -2,10 +2,21 @@
 <html>
 <body>
   <h1>Profile</h1>
-  <ul>
-    <li>Django user: {{ user }}</li>
-    <li>Pywikibot user: {{ pywikibot_user }}</li>
-    <li>Pywikibot user: {{ pywikibot_error }}</li>
-  </ul>
+
+  {% if error %}
+    <p style="color: red;">Error: {{ error }}</p>
+  {% else %}
+    <ul>
+      <li><strong>Django user:</strong> {{ user }}</li>
+      <li><strong>MediaWiki username:</strong> {{ mw_username }}</li>
+      {% if user_info %}
+        <li><strong>User ID:</strong> {{ user_info.id }}</li>
+        <li><strong>Groups:</strong> {{ user_info.groups|join:", " }}</li>
+        <li><strong>Rights:</strong> {{ user_info.rights|length }} rights</li>
+      {% endif %}
+    </ul>
+  {% endif %}
+
+  <p><a href="/">Back to Home</a></p>
 </body>
 </html>
