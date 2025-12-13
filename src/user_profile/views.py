@@ -6,21 +6,12 @@ from django.contrib.auth.decorators import login_required
 from mwclient import Site
 from social_django.models import UserSocialAuth
 
-from src.user_profile.models import WikiPage, WikiActor, WikiRevision
+from .models import WikiPage, WikiActor, WikiRevision
 
 
 def index(request):
     context = {}
     return render(request, 'user_profile/index.dtl', context)
-
-
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from oauth_app import settings
-from social_django.models import UserSocialAuth
-from mwclient import Site
-from urllib.parse import urlparse
-from .models import WikiPage, WikiRevision, WikiActor
 
 @login_required
 def profile(request):
