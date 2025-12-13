@@ -15,11 +15,6 @@
         <li><strong>Rights:</strong> {{ user_info.rights|length }} rights</li>
       {% endif %}
     </ul>
-
-    <!-- DEBUG INFO -->
-    <hr>
-    <h3>Debug: extra_data content</h3>
-    <pre>{{ debug_extra_data }}</pre>
   {% endif %}
 
   <p><a href="/">Back to Home</a></p>

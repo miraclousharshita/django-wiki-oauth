@@ -17,16 +17,13 @@ def profile(request):
     mw_username = None
     user_info = None
     error = None
-    debug_extra_data = None  # Add this
 
     try:
         social_auth = request.user.social_auth.get(provider="mediawiki")
 
-        debug_extra_data = social_auth.extra_data  # Add this
-
         mw_username = (
-                social_auth.extra_data.get('username') or  # Direct username key
-                social_auth.extra_data.get('user', {}).get('name') or  # Nested in user object
+                social_auth.extra_data.get('username') or
+                social_auth.extra_data.get('user', {}).get('name') or
                 None
         )
 
@@ -72,7 +69,6 @@ def profile(request):
         "mw_username": mw_username,
         "user_info": user_info,
         "error": error,
-        "debug_extra_data": debug_extra_data,  # Add this
     }
     return render(request, "user_profile/profile.dtl", context)
 
