@@ -36,11 +36,11 @@ def profile(request):
 
         parsed_url = urlparse(settings.SOCIAL_AUTH_MEDIAWIKI_URL)
         host = parsed_url.netloc
-        path = parsed_url.path.replace('/index.php', '').replace('/w', '')
+        path = '/w/'
 
         site = Site(
             host,
-            path=path + '/',
+            path=path,
             consumer_token=settings.SOCIAL_AUTH_MEDIAWIKI_KEY,
             consumer_secret=settings.SOCIAL_AUTH_MEDIAWIKI_SECRET,
             access_token=access_key,
