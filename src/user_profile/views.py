@@ -63,27 +63,33 @@ def profile(request):
                 social_auth.save()
 
         try:
-            total_articles = WikiPage.objects.using('wiki_replica').filter(
-                page_namespace=0,
-                page_is_redirect=False
-            ).count()
+            if 'wiki_replica' in settings.DATABASES:
+                total_articles = WikiPage.objects.using('wiki_replica').filter(
+                    page_namespace=0,
+                    page_is_redirect=False
+                ).count()
 
-            user_edit_count = 0
-            if mw_username:
-                username_bytes = mw_username.encode('utf-8') if isinstance(mw_username, str) else mw_username
-                actor = WikiActor.objects.using('wiki_replica').filter(
-                    actor_name=username_bytes
-                ).first()
+                user_edit_count = 0
+                if mw_username:
+                    username_bytes = mw_username.encode('utf-8') if isinstance(mw_username, str) else mw_username
+                    actor = WikiActor.objects.using('wiki_replica').filter(
+                        actor_name=username_bytes
+                    ).first()
 
-                if actor:
-                    user_edit_count = WikiRevision.objects.using('wiki_replica').filter(
-                        rev_actor=actor.actor_id
-                    ).count()
+                    if actor:
+                        user_edit_count = WikiRevision.objects.using('wiki_replica').filter(
+                            rev_actor=actor.actor_id
+                        ).count()
 
-            wiki_stats = {
-                'total_articles': total_articles,
-                'user_edit_count': user_edit_count,
-            }
+                wiki_stats = {
+                    'total_articles': total_articles,
+                    'user_edit_count': user_edit_count,
+                }
+            else:
+                wiki_stats = {
+                    'total_articles': 'N/A (local dev)',
+                    'user_edit_count': 'N/A (local dev)',
+                }
         except Exception as wiki_error:
             error = f"Wiki replica query error: {str(wiki_error)}"
 
@@ -131,18 +137,21 @@ def search_articles(request):
         exclude_redirects = request.GET.get('exclude_redirects') == 'on'
 
         try:
-            query = WikiPage.objects.using('wiki_replica').filter(
-                page_namespace=namespace
-            )
+            if 'wiki_replica' not in settings.DATABASES:
+                error = "Search is only available on Toolforge (wiki replica database not configured locally)"
+            else:
+                query = WikiPage.objects.using('wiki_replica').filter(
+                    page_namespace=namespace
+                )
 
-            if search_query:
-                search_term = search_query.replace(' ', '_')
-                query = query.filter(page_title__contains=search_term)
+                if search_query:
+                    search_term = search_query.replace(' ', '_')
+                    query = query.filter(page_title__contains=search_term)
 
-            if exclude_redirects:
-                query = query.filter(page_is_redirect=False)
+                if exclude_redirects:
+                    query = query.filter(page_is_redirect=False)
 
-            results = list(query[:limit])
+                results = list(query[:limit])
 
         except Exception as e:
             error = f"Search error: {str(e)}"
