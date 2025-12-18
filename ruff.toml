@@ -1,0 +1,13 @@
+[lint]
+select = ["E", "W", "F", "I", "B", "C4"]
+ignore = ["E501"]
+
+[lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"*/migrations/*.py" = ["E501"]
+"*/tests/*.py" = ["B"]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"

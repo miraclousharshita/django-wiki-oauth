@@ -9,10 +9,11 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+
 import os
 from pathlib import Path
-from django.utils.translation import gettext_lazy as _
 
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,67 +22,63 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-IS_TOOLFORGE = os.environ.get('IS_TOOLFORGE', 'false').lower() == 'true'
+IS_TOOLFORGE = os.environ.get("IS_TOOLFORGE", "false").lower() == "true"
 
 if IS_TOOLFORGE:
-    SECRET_KEY = os.environ.get('DJANGO_SECRET')
+    SECRET_KEY = os.environ.get("DJANGO_SECRET")
     DEBUG = False
-    ALLOWED_HOSTS = ['harshita-wiki-test.toolforge.org']
+    ALLOWED_HOSTS = ["harshita-wiki-test.toolforge.org"]
 else:
-    SECRET_KEY = 'secret-key'
+    SECRET_KEY = "secret-key"
     DEBUG = True
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    'social_django',
-    'rest_framework',
-    'corsheaders',
-
-    'user_profile',
-
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "social_django",
+    "rest_framework",
+    "corsheaders",
+    "user_profile",
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
-
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "social_django.middleware.SocialAuthExceptionMiddleware",
 ]
 
-ROOT_URLCONF = 'oauth_app.urls'
+ROOT_URLCONF = "oauth_app.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'oauth_app.wsgi.application'
+WSGI_APPLICATION = "oauth_app.wsgi.application"
 
 
 # Database
@@ -89,31 +86,31 @@ WSGI_APPLICATION = 'oauth_app.wsgi.application'
 
 if IS_TOOLFORGE:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 's57235__test_wiki_oauth',
-            'HOST': 'tools.db.svc.wikimedia.cloud',
-            'OPTIONS': {
-                'read_default_file': os.path.expanduser("~/replica.my.cnf"),
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-                'charset': 'utf8',
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "s57235__test_wiki_oauth",
+            "HOST": "tools.db.svc.wikimedia.cloud",
+            "OPTIONS": {
+                "read_default_file": os.path.expanduser("~/replica.my.cnf"),
+                "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+                "charset": "utf8",
             },
         },
-        'wiki_replica': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'enwiki_p',
-            'HOST': 'enwiki.analytics.db.svc.wikimedia.cloud',
-            'OPTIONS': {
-                'charset': 'utf8mb4',
-                'read_default_file': os.path.expanduser("~/replica.my.cnf")
+        "wiki_replica": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "enwiki_p",
+            "HOST": "enwiki.analytics.db.svc.wikimedia.cloud",
+            "OPTIONS": {
+                "charset": "utf8mb4",
+                "read_default_file": os.path.expanduser("~/replica.my.cnf"),
             },
-        }
+        },
     }
 else:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": str(BASE_DIR / "db.sqlite3"),
         }
     }
 
@@ -123,49 +120,49 @@ else:
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.mediawiki.MediaWiki',
-    'django.contrib.auth.backends.ModelBackend',
+    "social_core.backends.mediawiki.MediaWiki",
+    "django.contrib.auth.backends.ModelBackend",
 )
 
-SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['groups']
+SOCIAL_AUTH_PROTECTED_USER_FIELDS = ["groups"]
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = "en"
 
 LANGUAGES = [
-    ('en', _('English')),
-    ('fi', _('Finnish')),
+    ("en", _("English")),
+    ("fi", _("Finnish")),
 ]
 
-LANGUAGE_COOKIE_NAME = 'django_language'
+LANGUAGE_COOKIE_NAME = "django_language"
 LANGUAGE_COOKIE_AGE = None
 LANGUAGE_COOKIE_DOMAIN = None
-LANGUAGE_COOKIE_PATH = '/'
+LANGUAGE_COOKIE_PATH = "/"
 
 LOCALE_PATHS = [
-    BASE_DIR / 'locale',
-    ]
+    BASE_DIR / "locale",
+]
 
 USE_I18N = True
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_TZ = True
 
@@ -173,38 +170,38 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-SOCIAL_AUTH_MEDIAWIKI_KEY = os.environ.get('MEDIAWIKI_KEY')
-SOCIAL_AUTH_MEDIAWIKI_SECRET = os.environ.get('MEDIAWIKI_SECRET')
-SOCIAL_AUTH_MEDIAWIKI_URL = os.environ.get('MEDIAWIKI_URL')
-SOCIAL_AUTH_MEDIAWIKI_CALLBACK = os.environ.get('MEDIAWIKI_CALLBACK')
+SOCIAL_AUTH_MEDIAWIKI_KEY = os.environ.get("MEDIAWIKI_KEY")
+SOCIAL_AUTH_MEDIAWIKI_SECRET = os.environ.get("MEDIAWIKI_SECRET")
+SOCIAL_AUTH_MEDIAWIKI_URL = os.environ.get("MEDIAWIKI_URL")
+SOCIAL_AUTH_MEDIAWIKI_CALLBACK = os.environ.get("MEDIAWIKI_CALLBACK")
 
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'profile'
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "profile"
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
 }
 
 if IS_TOOLFORGE:
     CORS_ALLOWED_ORIGINS = [
-        'https://harshita-wiki-test.toolforge.org',
+        "https://harshita-wiki-test.toolforge.org",
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
-        'http://localhost:8080',
-        'http://127.0.0.1:8080',
-        'http://localhost:8000',
-        'http://127.0.0.1:8000',
+        "http://localhost:8080",
+        "http://127.0.0.1:8080",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
     ]
