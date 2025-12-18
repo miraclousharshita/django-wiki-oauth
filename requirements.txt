@@ -5,6 +5,8 @@ charset-normalizer==3.4.4
 cryptography==46.0.3
 defusedxml==0.7.1
 Django==5.2.9
+django-cors-headers==4.9.0
+djangorestframework==3.16.1
 idna==3.11
 mwclient==0.11.0
 mwoauth==0.4.0
@@ -13,6 +15,7 @@ oauthlib==3.3.1
 packaging==25.0
 pycparser==2.23
 PyJWT==2.10.1
+python-social-auth==0.3.6
 python3-openid==3.2.0
 pywikibot==10.7.3
 requests==2.32.5

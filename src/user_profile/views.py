@@ -167,3 +167,7 @@ def search_articles(request):
         'error': error,
     }
     return render(request, 'user_profile/search.dtl', context)
+
+@login_required
+def vue_app(request):
+    return render(request, 'user_profile/vue/app.dtl')

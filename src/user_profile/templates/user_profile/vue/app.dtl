@@ -1,0 +1,173 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django OAuth - Vue.js App</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .container {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        button {
+            background: #0645ad;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 3px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0534a0;
+        }
+        .error {
+            color: red;
+            padding: 10px;
+            background: #fee;
+            border-radius: 3px;
+        }
+        .loading {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>{% verbatim %}{{ message }}{% endverbatim %}</h1>
+
+        <!-- User Info Section -->
+        <div class="container">
+            <h2>User Information</h2>
+            <button @click="fetchUserInfo">Load User Info</button>
+
+            <div v-if="loading.user" class="loading">Loading...</div>
+            <div v-if="errors.user" class="error">{% verbatim %}{{ errors.user }}{% endverbatim %}</div>
+
+            <div v-if="userInfo">
+                <p><strong>Username:</strong> {% verbatim %}{{ userInfo.username }}{% endverbatim %}</p>
+                <p><strong>MediaWiki Username:</strong> {% verbatim %}{{ userInfo.mw_username }}{% endverbatim %}</p>
+                <p><strong>User ID:</strong> {% verbatim %}{{ userInfo.user_id }}{% endverbatim %}</p>
+                <p><strong>Groups:</strong> {% verbatim %}{{ userInfo.groups.join(', ') }}{% endverbatim %}</p>
+                <p><strong>Rights Count:</strong> {% verbatim %}{{ userInfo.rights_count }}{% endverbatim %}</p>
+            </div>
+        </div>
+
+        <!-- Wiki Stats Section -->
+        <div class="container">
+            <h2>Wikipedia Statistics</h2>
+            <button @click="fetchWikiStats">Load Stats</button>
+
+            <div v-if="loading.stats" class="loading">Loading...</div>
+            <div v-if="errors.stats" class="error">{% verbatim %}{{ errors.stats }}{% endverbatim %}</div>
+
+            <div v-if="wikiStats">
+                <p><strong>Total Articles:</strong> {% verbatim %}{{ wikiStats.total_articles }}{% endverbatim %}</p>
+                <p><strong>Your Edit Count:</strong> {% verbatim %}{{ wikiStats.user_edit_count }}{% endverbatim %}</p>
+            </div>
+        </div>
+
+        <!-- Search Section -->
+        <div class="container">
+            <h2>Search Wikipedia</h2>
+            <input v-model="searchQuery" @keyup.enter="searchArticles" placeholder="Search articles..." style="padding: 8px; width: 300px;">
+            <button @click="searchArticles">Search</button>
+
+            <div v-if="loading.search" class="loading">Loading...</div>
+            <div v-if="errors.search" class="error">{% verbatim %}{{ errors.search }}{% endverbatim %}</div>
+
+            <div v-if="searchResults.length > 0">
+                <h3>Results ({% verbatim %}{{ searchResults.length }}{% endverbatim %})</h3>
+                <div v-for="result in searchResults" :key="result.page_id" style="border: 1px solid #ddd; padding: 10px; margin: 10px 0;">
+                    <h4><a :href="result.url" target="_blank">{% verbatim %}{{ result.page_title }}{% endverbatim %}</a></h4>
+                    <p>Page ID: {% verbatim %}{{ result.page_id }}{% endverbatim %} | Length: {% verbatim %}{{ result.page_len }}{% endverbatim %} bytes</p>
+                </div>
+            </div>
+        </div>
+
+        <p><a href="/">Back to Home</a> | <a href="/profile">Traditional Profile</a></p>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    message: 'Vue.js + Django REST API',
+                    userInfo: null,
+                    wikiStats: null,
+                    searchQuery: '',
+                    searchResults: [],
+                    loading: {
+                        user: false,
+                        stats: false,
+                        search: false
+                    },
+                    errors: {
+                        user: null,
+                        stats: null,
+                        search: null
+                    }
+                }
+            },
+            methods: {
+                async fetchUserInfo() {
+                    this.loading.user = true;
+                    this.errors.user = null;
+                    try {
+                        const response = await axios.get('/api/user/');
+                        this.userInfo = response.data;
+                    } catch (error) {
+                        this.errors.user = error.response?.data?.error || 'Failed to load user info';
+                    } finally {
+                        this.loading.user = false;
+                    }
+                },
+                async fetchWikiStats() {
+                    this.loading.stats = true;
+                    this.errors.stats = null;
+                    try {
+                        const response = await axios.get('/api/stats/');
+                        this.wikiStats = response.data;
+                    } catch (error) {
+                        this.errors.stats = error.response?.data?.error || 'Failed to load stats';
+                    } finally {
+                        this.loading.stats = false;
+                    }
+                },
+                async searchArticles() {
+                    if (!this.searchQuery.trim()) return;
+
+                    this.loading.search = true;
+                    this.errors.search = null;
+                    try {
+                        const response = await axios.get('/api/search/', {
+                            params: {
+                                q: this.searchQuery,
+                                limit: 5
+                            }
+                        });
+                        this.searchResults = response.data.results;
+                    } catch (error) {
+                        this.errors.search = error.response?.data?.error || 'Failed to search';
+                    } finally {
+                        this.loading.search = false;
+                    }
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

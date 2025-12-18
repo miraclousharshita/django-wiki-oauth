@@ -4,7 +4,8 @@
   <h1>My first Django OAuth app</h1>
   <p>
     <a href="{% url 'profile' %}">Profile</a> |
-    <a href="{% url 'search' %}">Search Articles</a>
+    <a href="{% url 'search' %}">Search Articles</a> |
+    <a href="{% url 'vue-app' %}">Vue.js App</a>
   </p>
 </body>
 </html>
