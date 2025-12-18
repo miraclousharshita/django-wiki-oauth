@@ -1,11 +1,33 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Django OAuth App" %}</title>
+</head>
 <body>
-  <h1>My first Django OAuth app</h1>
+  <h1>{% trans "My first Django OAuth app" %}</h1>
+
+    <form action="/i18n/setlang/" method="post">
+        {% csrf_token %}
+    <input name="next" type="hidden" value="/">
+    <select name="language" onchange="this.form.submit()">
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% for lang_code, lang_name in LANGUAGES %}
+            <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>
+                {{ lang_name }}
+            </option>
+        {% endfor %}
+    </select>
+  </form>
+
+  <p>Current language: {{ LANGUAGE_CODE }}</p>
+
   <p>
-    <a href="{% url 'profile' %}">Profile</a> |
-    <a href="{% url 'search' %}">Search Articles</a> |
-    <a href="{% url 'vue-app' %}">Vue.js App</a>
+    <a href="{% url 'profile' %}">{% trans "Profile" %}</a> |
+    <a href="{% url 'search' %}">{% trans "Search Articles" %}</a> |
+    <a href="{% url 'vue-app' %}">{% trans "Vue.js App" %}</a>
   </p>
 </body>
 </html>
